@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int element;
+typedef struct DlistNode {
+	element data;
+	struct DlistNode *llink;
+	struct DlistNode *rlink;
+} DlistNode;
+
+// head node is only for simplifing insert, remove code, so it's different from head pointer
+// only a head node exists when list is empty
+
+void dinsert_node(DlistNode *before, DlistNode *new_node)	// insert new node to before's right side
+{
+	new_node->llink = before;				// complicate
+	new_node->rlink = before->rlink;			// connection
+	before->rlink->llink = new_node;			// but
+	before->rlink = new_node;				// it's not hard to get it
+}
+
+void dremove_node(DlistNode *phead_node, DlistNode *removed)
+{
+	if( removed == phead_node ) return;			// if the only left node is head_node, return
+	removed->llink->rlink = removed->rlink;			// one more jump to left
+	removed->rlink->llink = removed->llink;			// one more jump to right
+	free(removed);
+}
