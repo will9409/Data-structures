@@ -99,3 +99,10 @@ element pop(LinkedStackType *s)
 	}
 }
 
+
+/***************************************************************************************************************/
+Stack implementation
+1. Bracket check
+2. Postfix calculation
+3. Maze search problem
+4. ...
