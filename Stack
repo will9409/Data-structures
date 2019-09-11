@@ -8,7 +8,7 @@ typedef strcut {
 	element stack[MAX_STACK_SIZE];
 }StackType; 
 
-void init(STackType *s) // Stack initiate function
+void init(StackType *s) // Stack initiate function
 {
 	s->top = -1;
 }
