@@ -1,0 +1,101 @@
+#include <stdio.h>
+#define MAX_STACK_SIZE 1000
+
+typedef int element; // element type
+
+typedef strcut {
+	int top;
+	element stack[MAX_STACK_SIZE];
+}StackType; 
+
+void init(STackType *s) // Stack initiate function
+{
+	s->top = -1;
+}
+
+int is_empty(StackType *s)
+{
+	return (s->tmp == -1); // If stack is empty, return 1, else 0
+}
+
+int is_full(StackTpe *s)
+{
+	return (s->top == (MAX_STACK_SIZE - 1)); // If stack is full, return 1, else 0
+}
+
+void push(StackType *s, element item)
+{
+	if(if_full(s)){ // If stack is full
+		fprintf(stderr,"Stack is full.\n");  // print alert and return
+		return;
+	}
+	else
+		s->stack[++(s->top)] = item; // If stack is not full, push element
+}
+
+element pop(StackType *s)
+{
+	if(is_empty(s)){ // If stack is empty
+		fprintf(stderr,"Stack is empty.\n");
+		exit(1);
+	}
+	else
+		return s->stack[(s->top)--]; // If not, pop the top element of the stack
+}
+
+element peek(StackType *s)
+{
+	if(is_empty(s)){ // If stack is empty, return alert and exit program
+		fprintf(stderr,"Stack is empty.\n");
+		exit(1);
+	}
+	else
+		return s->stack[s->top]; // else get the top of the stack
+}
+
+
+/*****************************************************************************************/
+//Linked Stack
+// No size limit
+// but hard to program and insert, remove time take so long
+
+typedef int element; // element type
+
+typedef struct StackNode{
+	element item;
+	struct StackNode *link;
+} StackNode;  // Node type
+
+typedef struct {
+	StackNode *top;
+} LinkedStackType; // connected stack's data
+
+void push(LinkedStackType *s, element item)
+{
+	StackNode *temp=(StackNode *)malloc(sizeof(StackNode));
+	if( temp == NULL ){
+		fprintf(stderr, "Memory allocation error.\n");
+		return;
+	}
+	else{
+		temp->item = item;
+		temp->link = s->top;
+		s->top = temp;
+	}
+}
+
+element pop(LinkedStackType *s)
+{
+	if( is_empty(s)){
+		fprintf(stderr,"Stack is empty.\n");
+		exit(1);
+	}
+	else{
+		StackNode *temp = s->tmp;
+		int item = temp->item;
+		s->top = s->top->link;
+		free(temp);
+		return item;
+	}
+}
+
