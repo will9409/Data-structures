@@ -15,7 +15,7 @@ void init(StackType *s) // Stack initiate function
 
 int is_empty(StackType *s)
 {
-	return (s->tmp == -1); // If stack is empty, return 1, else 0
+	return (s->top == -1); // If stack is empty, return 1, else 0
 }
 
 int is_full(StackTpe *s)
