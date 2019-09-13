@@ -106,3 +106,9 @@ Stack implementation
 2. Postfix calculation
 3. Maze search problem
 4. ...
+/***************************************************************************************************************/
+Stack
+   - Full ascending stack
+   - Full descending stack
+   - empty ascending stack
+   - empty descending stack
