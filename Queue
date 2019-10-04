@@ -1,1 +1,138 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef int element;
+
+typedef struct DlinkNode {
+	element data;
+	struct DlinkNode *llink;
+	struct DlinkNode *rlink;
+} DlinkNode;
+
+typedef struct DequeType {
+	struct DlinkNode *head;
+	struct DlinkNode *tail;
+} DequeType;
+
+int is_empty(DequeType *dq)
+{
+	return (dq->head == NULL && dq->tail == NULL);
+}
+
+DlinkNode *create_node(DlinkNode *left, element item, DlinkNode *right)
+{
+	DlinkNode *nodep;
+
+	if( (nodep = (DlinkNode *)malloc(sizeof(*nodep))) == NULL ){
+		printf("malloc failed\n");
+	} else {
+		nodep->data = item;
+		nodep->llink = left;
+		nodep->rlink = right;
+	}
+
+	return nodep;
+}
+
+void add_front(DequeType *dq, element item)
+{
+	DlinkNode *nodep;
+
+	if( is_empty(dq) )
+		nodep = create_node(NULL, item, NULL);
+	else {
+		nodep = create_node(NULL, item, dq->head);
+		nodep->rlink = dq->head;
+	}
+
+	dq->head = nodep;
+}
+
+void add_rear(DequeType *dq, element item)
+{
+	DlinkNode *nodep;
+
+	if( is_empty(dq) )
+		nodep = create_node(NULL,item, NULL);
+	else {
+		nodep = create_node(dq->tail, item, NULL);
+		nodep->llink = dq->tail;
+	}
+
+	dq->tail = nodep;
+}
+
+element delete_front(DequeType *dq)
+{
+	element item;
+	DlinkNode *removed_node;
+
+	if( is_empty(dq) )
+		printf("Queue is empty\n");
+	 else {
+		removed_node = dq->head;
+		item = removed_node->data;
+		dq->head = removed_node->rlink;
+		free(removed_node);
+
+		if(dq->head == NULL)
+			dq->tail = NULL;
+		else
+			dq->head->llink = NULL;
+	}
+
+	return item;
+}
+
+element delete_rear(DequeType *dq)
+{
+	element item;
+	DlinkNode *removed_node;
+
+	if( is_empty(dq) )
+		printf("Queue is empty\n");
+	 else {
+		removed_node = dq->tail;
+		item = removed_node->data;
+		dq->tail = removed_node->llink;
+		free(removed_node);
+
+		if(dq->tail == NULL)
+			dq->head = NULL;
+		else
+			dq->tail->rlink = NULL;
+
+	}
+
+	return item;
+}
+
+void get_front(DequeType *dq)
+{
+	printf("%d\n",dq->head->data);
+	return;
+}
+
+void get_rear(DequeType *dq)
+{
+	printf("%d\n",dq->tail->data);
+	return;
+}
+
+int main(){
+	DequeType deq;
+	deq.head = NULL;
+	deq.tail = NULL;
+
+	add_front(&deq, 1);
+	add_front(&deq, 2);
+	add_rear(&deq, 3);
+	add_rear(&deq, 4);
+
+	delete_front(&deq);
+	delete_rear(&deq);
+
+	get_front(&deq);
+	get_rear(&deq);
+
+}
