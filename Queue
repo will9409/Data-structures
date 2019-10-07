@@ -107,18 +107,46 @@ element delete_rear(DequeType *dq)
 	return item;
 }
 
-void get_front(DequeType *dq)
+int get_front(DequeType *dq)
 {
-	printf("%d\n",dq->head->data);
-	return;
+	return dq->head->data;
 }
 
-void get_rear(DequeType *dq)
+int get_rear(DequeType *dq)
 {
-	printf("%d\n",dq->tail->data);
-	return;
+	return dq->tail->data;
 }
 
+void print_all(DequeType *dq)
+{
+	DlinkNode *nodep = dq->head;
+	while(nodep != NULL){
+		printf("%d ",nodep->data);
+		nodep = nodep->rlink;
+	}
+
+}
+
+int get_size(DequeType *dq)
+{
+	int size = 0;
+	DlinkNode *nodep = dq->head;
+	while(nodep != NULL){
+		nodep = nodep->rlink;
+		size++;
+	}
+	return size;
+
+}
+
+void delete_this_all(DequeType *dq)
+{
+	while(dq->head != NULL){
+		delete_front(dq);
+	}
+}
+
+/*
 int main(){
 	DequeType deq;
 	deq.head = NULL;
@@ -135,4 +163,4 @@ int main(){
 	get_front(&deq);
 	get_rear(&deq);
 
-}
+}*/
