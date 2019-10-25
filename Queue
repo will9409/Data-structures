@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef int element;
-
 typedef struct DlinkNode {
-	element data;
+	int data;
 	struct DlinkNode *llink;
 	struct DlinkNode *rlink;
 } DlinkNode;
@@ -14,12 +12,15 @@ typedef struct DequeType {
 	struct DlinkNode *tail;
 } DequeType;
 
+int get_size(DequeType *dq);
+
+
 int is_empty(DequeType *dq)
 {
-	return (dq->head == NULL && dq->tail == NULL);
+	return ((dq->head == NULL) && (dq->tail == NULL));
 }
 
-DlinkNode *create_node(DlinkNode *left, element item, DlinkNode *right)
+DlinkNode *create_node(DlinkNode *left, int item, DlinkNode *right)
 {
 	DlinkNode *nodep;
 
@@ -34,59 +35,65 @@ DlinkNode *create_node(DlinkNode *left, element item, DlinkNode *right)
 	return nodep;
 }
 
-void add_front(DequeType *dq, element item)
+void add_front(DequeType *dq, int item)
 {
 	DlinkNode *nodep;
 
-	if( is_empty(dq) )
+	if( is_empty(dq) ){
 		nodep = create_node(NULL, item, NULL);
+		dq->tail = nodep;
+	}
 	else {
 		nodep = create_node(NULL, item, dq->head);
-		nodep->rlink = dq->head;
+		dq->head->llink = nodep;
 	}
 
 	dq->head = nodep;
 }
 
-void add_rear(DequeType *dq, element item)
+void add_rear(DequeType *dq, int item)
 {
 	DlinkNode *nodep;
 
-	if( is_empty(dq) )
+	if( is_empty(dq) ){
 		nodep = create_node(NULL,item, NULL);
+		dq->head = nodep;
+	}
 	else {
 		nodep = create_node(dq->tail, item, NULL);
-		nodep->llink = dq->tail;
+		dq->tail->rlink = nodep;
 	}
 
 	dq->tail = nodep;
 }
 
-element delete_front(DequeType *dq)
+int delete_front(DequeType *dq)
 {
-	element item;
+	int item;
 	DlinkNode *removed_node;
 
 	if( is_empty(dq) )
-		printf("Queue is empty\n");
+		printf("queue is empty.\n");
 	 else {
 		removed_node = dq->head;
 		item = removed_node->data;
 		dq->head = removed_node->rlink;
 		free(removed_node);
 
-		if(dq->head == NULL)
+		if(dq->head == NULL){
 			dq->tail = NULL;
-		else
+		}
+		else{
 			dq->head->llink = NULL;
+		}
 	}
 
 	return item;
 }
 
-element delete_rear(DequeType *dq)
+int delete_rear(DequeType *dq)
 {
-	element item;
+	int item;
 	DlinkNode *removed_node;
 
 	if( is_empty(dq) )
@@ -109,21 +116,56 @@ element delete_rear(DequeType *dq)
 
 int get_front(DequeType *dq)
 {
-	return dq->head->data;
+	if(is_empty(dq) == 0)
+		return dq->head->data;
+	else
+		return -1;
 }
 
 int get_rear(DequeType *dq)
 {
-	return dq->tail->data;
+	if(is_empty(dq) == 0)
+		return dq->tail->data;
+	else
+		return -1;
+}
+
+int get_nst_from_front(DequeType *dq, int n)
+{
+	DlinkNode *nodep;
+
+	if(is_empty(dq) == 0){
+			nodep = dq->head;
+		for(int i = 1; i <= n; i++){
+			if(nodep->rlink != NULL)
+				nodep = nodep->rlink;
+			else{
+				printf("could not accessed to %d'st data. return.\n",n);
+				return -1;
+			}
+		}
+		return nodep->data;
+	}
+	else {
+		printf("queue is empty.\n");
+		return -1;
+	}
 }
 
 void print_all(DequeType *dq)
 {
+	if(get_size(dq) == 0)
+	{
+		return;
+
+	}
 	DlinkNode *nodep = dq->head;
+
 	while(nodep != NULL){
 		printf("%d ",nodep->data);
 		nodep = nodep->rlink;
 	}
+	printf("\n");
 
 }
 
@@ -146,6 +188,26 @@ void delete_this_all(DequeType *dq)
 	}
 }
 
+
+
+/*
+int main(){
+	DequeType deq;
+	deq.head = NULL;
+	deq.tail = NULL;
+
+	add_front(&deq, 1);
+	add_front(&deq, 2);
+	add_rear(&deq, 3);
+	add_rear(&deq, 4);
+
+	delete_front(&deq);
+	delete_rear(&deq);
+
+	get_front(&deq);
+	get_rear(&deq);
+
+}*/
 /*
 int main(){
 	DequeType deq;
